@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Averia+Libre&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles/style.css" />
+    <meta charset="UTF-8" />
+    <link rel="icon" href="../images/logo-myhealth.png" />
+    <title>MyHealth - Criar conta</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+
+    <script src="../scripts/script.js"></script>
+    <script src="../scripts/criar-conta.js"></script>
+
+    <script type="module">
+      import { app, auth } from "../scripts/firebase.js";
+      import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-auth.js";
+
+      const cadastrarUsuario = () => {
+        passCheck();
+        if (
+          document.getElementById("message").innerHTML != "Senha não confere!"
+        ) {
+          const email = getEmail();
+          const senha = getSenha();
+
+          createUserWithEmailAndPassword(auth, email, senha)
+            .then((user) => {
+              console.log(JSON.stringify(user));
+              alert("Cadastro realizado com sucesso!");
+              pageEntrar();
+            })
+            .catch((error) => {
+              console.log(error.message);
+              alert("Erro!");
+            });
+        }
+      };
+
+      window.onload = () => {
+        dynamicHeader();
+        document
+          .getElementById("btnCadastrar")
+          .addEventListener("click", cadastrarUsuario);
+      };
+    </script>
+  </head>
+  <body>
+    <!--04-->
+    <header class="subheader" id="header"></header>
+
+    <main class="mainBgColor">
+      <table class="divMainCriarConta">
+        <tr>
+          <td align="right" class="txtCampos">Nome Completo</td>
+          <td align="left">
+            <input
+              class="inputTextCriarConta"
+              type="text"
+              value="Jurandir Pereira"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td align="right" class="txtCampos">Sexo</td>
+          <td align="left">
+            <input
+              class="inputRadio"
+              type="radio"
+              name="sexo"
+              checked="checked"
+            />
+            <span class="txtCampos">Masculino</span>
+            <input class="inputRadio" type="radio" name="sexo" />
+            <span class="txtCampos">Feminino</span>
+          </td>
+        </tr>
+        <tr>
+          <td align="right" class="txtCampos">Data de nascimento</td>
+          <td align="left">
+            <input class="inputDateCriarConta" type="date" value="2022-08-11" />
+          </td>
+        </tr>
+        <tr>
+          <td align="right" class="txtCampos">E-mail</td>
+          <td align="left">
+            <input
+              class="inputTextCriarConta"
+              type="text"
+              id="email"
+              value="jurandir.pereira@hotmail.com"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td align="right" class="txtCampos">Senha</td>
+          <td align="left">
+            <input
+              class="inputTextCriarConta"
+              type="password"
+              id="password"
+              value="123456789"
+              onkeyup="passCheck()"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td align="right" class="txtCampos">Repetir senha</td>
+          <td align="left">
+            <input
+              class="inputTextCriarConta"
+              type="password"
+              id="confirm_password"
+              value="12345"
+              onkeyup="passCheck()"
+            />
+          </td>
+        </tr>
+      </table>
+      <div class="divSenhaCriarConta">
+        <span id="message">&#8203;</span>
+      </div>
+      <div class="divBtnMain">
+        <div class="btnMainSmall" id="btnCadastrar">
+          <span class="txtBtnMainSmall">Cadastrar</span>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

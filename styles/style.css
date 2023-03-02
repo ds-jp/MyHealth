@@ -1,0 +1,776 @@
+:root {
+  --blue: #419ed7;
+  --light-blue: #3f92c5;
+  --white: #ffffff;
+  --shadow-grey: #5a5a5a;
+  --light-grey: #8b8b8b;
+  --light-red: #fd7979;
+  --green: #49b976;
+  --light-green: #37bd6d;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  font-family: "Averia Libre", cursive;
+
+  display: flex;
+  flex-direction: column;
+
+  height: 100%;
+}
+
+.header {
+  display: flex;
+
+  height: 5.438rem;
+
+  background: #8fe1d9;
+
+  justify-content: space-between;
+  align-items: center;
+}
+
+.subheader {
+  display: flex;
+
+  height: 5.438rem;
+
+  background: #c1e7e3;
+
+  justify-content: space-between;
+  align-items: center;
+}
+
+.flexHeader {
+  display: flex;
+
+  cursor: pointer;
+
+  justify-content: space-between;
+  align-items: center;
+}
+
+.imgHeader {
+  width: 3.188rem;
+  height: 3.188rem;
+  margin: 0.75rem;
+}
+
+.txtHeader {
+  font-size: 3rem;
+
+  color: var(--blue);
+}
+
+.txtBtnHeader {
+  font-size: 1.5rem;
+
+  color: var(--white);
+}
+
+.txtMain {
+  font-size: 4rem;
+
+  margin-bottom: 10%;
+
+  text-align: center;
+
+  color: var(--blue);
+}
+
+.mainBgColor {
+  height: 100%;
+
+  background-color: #add5d0;
+}
+
+.mainIndex {
+  height: 100%;
+
+  background-image: url("../images/bg-body-doctor-with-vaccine.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+.gradientMainIndex {
+  height: 100%;
+
+  background-color: rgba(130, 152, 150, 0.8);
+  background-image: linear-gradient(
+      179.55deg,
+      rgba(255, 255, 255, 0.24) 15.85%,
+      rgba(255, 255, 255, 0.48) 40.1%,
+      rgba(255, 255, 255, 0) 68.12%
+    ),
+    url("../images/bg-body-gradient.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+.contentMainIndex {
+  display: flex;
+  flex-direction: column;
+
+  height: 100%;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.btnHeaderIndexEntrar {
+  display: flex;
+
+  width: 12.375rem;
+  height: 3.25rem;
+  margin: 0.75rem;
+
+  cursor: pointer;
+
+  border: 0.0625rem solid var(--blue);
+  background: var(--blue);
+  -webkit-box-shadow: 0 0.25rem 0.25rem -0.125rem var(--shadow-grey);
+  -moz-box-shadow: 0 0.25rem 0.25rem -0.125rem var(--shadow-grey);
+  box-shadow: 0 0.25rem 0.25rem -0.125rem var(--shadow-grey);
+
+  justify-content: center;
+  align-items: center;
+}
+
+.btnMainIndexCriarConta {
+  display: flex;
+
+  width: 19rem;
+  height: 3.688rem;
+
+  cursor: pointer;
+
+  border: 0.0625rem solid var(--blue);
+  background: var(--blue);
+  -webkit-box-shadow: 0 0.25rem 0.25rem -0.125rem var(--shadow-grey);
+  -moz-box-shadow: 0 0.25rem 0.25rem -0.125rem var(--shadow-grey);
+  box-shadow: 0 0.25rem 0.25rem -0.125rem var(--shadow-grey);
+
+  justify-content: center;
+  align-items: center;
+}
+
+.txtBtnMainIndexCriarConta {
+  font-size: 2rem;
+
+  color: var(--white);
+}
+
+.btnHeaderHomeVacinas {
+  display: flex;
+
+  width: 11.75rem;
+  height: 3.125rem;
+  margin: 0.75rem;
+
+  cursor: pointer;
+
+  border: 0.0625rem solid var(--blue);
+  background: var(--blue);
+  -webkit-box-shadow: 0 0.25rem 0.25rem -0.125rem var(--shadow-grey);
+  -moz-box-shadow: 0 0.25rem 0.25rem -0.125rem var(--shadow-grey);
+  box-shadow: 0 0.25rem 0.25rem -0.125rem var(--shadow-grey);
+
+  justify-content: center;
+  align-items: center;
+}
+
+.btnHeaderHomeLogout {
+  display: flex;
+
+  width: 7.125rem;
+  height: 3.125rem;
+  margin: 0.75rem;
+
+  cursor: pointer;
+
+  border: 0.0625rem solid var(--blue);
+  background: var(--blue);
+  -webkit-box-shadow: 0 0.25rem 0.25rem -0.125rem var(--shadow-grey);
+  -moz-box-shadow: 0 0.25rem 0.25rem -0.125rem var(--shadow-grey);
+  box-shadow: 0 0.25rem 0.25rem -0.125rem var(--shadow-grey);
+
+  justify-content: center;
+  align-items: center;
+}
+
+.navMainHome {
+  display: flex;
+  flex-direction: column;
+
+  margin-top: 1rem;
+
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.searchVacina {
+  all: unset;
+
+  font-size: 1.5rem;
+
+  /* <input> tag */
+  display: flex;
+  flex-direction: row;
+
+  width: 95%;
+  height: 2.5rem;
+
+  color: var(--light-grey);
+
+  /* <form> tag */
+  background-color: var(--white);
+
+  align-items: center;
+}
+
+.iconSearch {
+  all: unset;
+
+  display: flex;
+
+  width: 1.688rem;
+  height: 1.625rem;
+  margin-right: 0.75rem;
+  margin-left: 0.75rem;
+
+  color: var(--light-grey);
+
+  align-items: center;
+}
+
+.vacinasMainHome {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  height: 80%;
+
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.divVacinasMainHome {
+  width: auto;
+  height: 100%;
+}
+
+.cardsDivVacinasMainHome {
+  display: grid;
+
+  height: 100%;
+  max-height: 31.25rem;
+
+  grid-template-columns: 16rem 16rem 16rem;
+  column-gap: 8rem;
+  row-gap: 1.875rem;
+  align-items: center;
+  margin-top: 0.9375rem;
+  overflow-y: auto;
+}
+
+.itemsCardsDivVacinasMainHome {
+  list-style: none;
+
+  height: 14.5rem;
+
+  border-radius: 0.625rem;
+  background-color: var(--white);
+
+  cursor: pointer;
+}
+
+.contentItemsCardsDivVacinasMainHome {
+  display: flex;
+  flex-direction: column;
+
+  height: 100%;
+
+  align-items: center;
+  justify-content: space-between;
+}
+
+.imgContentItemsCardsDivVacinasMainHome {
+  width: 90%;
+  height: 45%;
+}
+
+.txtNomeContentItemsCardsDivVacinasMainHome {
+  font-size: 2.25rem;
+
+  color: var(--light-blue);
+}
+
+.txtNomeContentItemsCardsDivVacinasMainHome:link {
+  text-decoration: none;
+
+  color: var(--light-blue);
+  background-color: transparent;
+}
+
+.txtNomeContentItemsCardsDivVacinasMainHome:visited {
+  text-decoration: none;
+
+  color: var(--light-blue);
+  background-color: transparent;
+}
+
+.txtNomeContentItemsCardsDivVacinasMainHome:hover {
+  text-decoration: none;
+
+  color: var(--light-blue);
+  background-color: transparent;
+}
+
+.txtNomeContentItemsCardsDivVacinasMainHome:active {
+  text-decoration: none;
+
+  color: var(--light-blue);
+  background-color: transparent;
+}
+
+.txtProxDoseContentItemsCardsDivVacinasMainHome {
+  font-size: 1rem;
+
+  color: var(--light-red);
+}
+
+.txtDoseItemsCardsDivVacinasMainHome {
+  font-size: 1rem;
+
+  color: var(--white);
+}
+
+.divDoseItemsCardsDivVacinasMainHome {
+  width: 36%;
+
+  text-align: center;
+
+  background-color: var(--light-blue);
+}
+
+.divProxDoseContentItemsCardsDivVacinasMainHome {
+  width: 93%;
+
+  text-align: right;
+}
+
+.txtDataItemsCardsDivVacinasMainHome {
+  font-size: 1rem;
+
+  color: var(--light-grey);
+}
+
+.btnMainSmall {
+  display: flex;
+
+  width: 11.75rem;
+  height: 3.125rem;
+
+  cursor: pointer;
+
+  border: 0.0625rem solid var(--light-green);
+  background: var(--green);
+  -webkit-box-shadow: 0 0.25rem 0.25rem -0.125rem var(--shadow-grey);
+  -moz-box-shadow: 0 0.25rem 0.25rem -0.125rem var(--shadow-grey);
+  box-shadow: 0 0.25rem 0.25rem -0.125rem var(--shadow-grey);
+
+  justify-content: center;
+  align-items: center;
+}
+
+.txtBtnMainSmall {
+  font-size: 1.5rem;
+
+  color: var(--white);
+}
+
+.divBtnExcluir {
+  display: flex;
+
+  margin-top: 1rem;
+  margin-right: 1rem;
+
+  justify-content: right;
+}
+
+.btnMainExcluir {
+  display: flex;
+
+  width: 8.3125rem;
+  height: 2.75rem;
+
+  cursor: pointer;
+
+  background: var(--light-red);
+  -webkit-box-shadow: 0 0.25rem 0.25rem -0.125rem var(--shadow-grey);
+  -moz-box-shadow: 0 0.25rem 0.25rem -0.125rem var(--shadow-grey);
+  box-shadow: 0 0.25rem 0.25rem -0.125rem var(--shadow-grey);
+
+  justify-content: center;
+  align-items: center;
+}
+
+.txtBtnExcluir {
+  font-size: 1.5rem;
+
+  color: var(--white);
+}
+
+.iconBtnExcluir {
+  margin-right: 0.4063rem;
+  margin-left: 0rem;
+
+  color: var(--white);
+}
+
+.txtCampos {
+  font-size: 2.25rem;
+
+  color: var(--white);
+}
+
+.divMainEditar {
+  width: 100%;
+  height: 70%;
+}
+
+.btnMainEditarSalvar {
+  display: flex;
+
+  width: 13.3125rem;
+  height: 3rem;
+
+  cursor: pointer;
+
+  border: 0.0625rem solid var(--light-green);
+  background: var(--green);
+  -webkit-box-shadow: 0 0.25rem 0.25rem -0.125rem var(--shadow-grey);
+  -moz-box-shadow: 0 0.25rem 0.25rem -0.125rem var(--shadow-grey);
+  box-shadow: 0 0.25rem 0.25rem -0.125rem var(--shadow-grey);
+
+  justify-content: center;
+  align-items: center;
+}
+
+.inputDate {
+  all: unset;
+
+  font-size: 2.25rem;
+
+  width: 26.5%;
+  padding-right: 0.5625rem;
+  padding-left: 0.625rem;
+
+  text-align: left;
+
+  color: var(--light-blue);
+  background-color: var(--white);
+
+  align-items: center;
+}
+
+.inputDate::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+
+  background: url(../images/icon-calendar.png) no-repeat;
+}
+
+.inputTextEditar {
+  all: unset;
+
+  font-size: 2.25rem;
+
+  width: 26.5%;
+  padding-right: 0.5625rem;
+  padding-left: 0.625rem;
+
+  text-align: left;
+
+  color: var(--light-blue);
+  background-color: var(--white);
+}
+
+.inputTextCriarConta {
+  all: unset;
+
+  font-size: 2.25rem;
+
+  width: 65%;
+  padding-right: 0.5625rem;
+  padding-left: 0.625rem;
+
+  text-align: left;
+
+  color: var(--light-blue);
+  background-color: var(--white);
+}
+
+.inputDateCriarConta {
+  all: unset;
+
+  font-size: 2.25rem;
+
+  width: 32%;
+  padding-right: 0.5625rem;
+  padding-left: 0.625rem;
+
+  text-align: left;
+
+  color: var(--light-blue);
+  background-color: var(--white);
+
+  align-items: center;
+}
+
+.inputDateCriarConta::-webkit-calendar-picker-indicator {
+  background: url(../images/icon-calendar.png) no-repeat;
+}
+
+.inputRadio {
+  width: 2.1875rem;
+  height: 2rem;
+
+  border: 0rem;
+}
+
+.divComprovantePreview {
+  display: flex;
+  flex-direction: column;
+}
+
+.imgComprovanteUpload {
+  margin-top: 0.75rem;
+}
+
+.labelUpload {
+  display: flex;
+  width: 18.6875rem;
+  height: 2.9375rem;
+}
+
+.inputUploadFile {
+  font-size: 1.5rem;
+
+  display: flex;
+
+  width: 18.6875rem;
+  height: 2.9375rem;
+  padding-left: 0.9375rem;
+
+  cursor: pointer;
+
+  color: var(--white);
+  background-color: var(--blue);
+  -webkit-box-shadow: 0 0.25rem 0.25rem -0.125rem var(--shadow-grey);
+  -moz-box-shadow: 0 0.25rem 0.25rem -0.125rem var(--shadow-grey);
+  box-shadow: 0 0.25rem 0.25rem -0.125rem var(--shadow-grey);
+
+  align-items: center;
+}
+
+.upload-photo {
+  position: fixed;
+  z-index: -1;
+
+  opacity: 0;
+}
+
+td {
+  padding: 0.5rem;
+}
+
+.divBtnMain {
+  display: flex;
+
+  height: 10%;
+  margin-top: 0.3125rem;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.divMainCriarConta {
+  width: 90%;
+  height: 70%;
+  margin-top: 2.25rem;
+}
+
+.divSenhaCriarConta {
+  display: flex;
+
+  width: 89%;
+  margin-top: -1%;
+  margin-bottom: 2%;
+
+  color: var(--light-red);
+
+  justify-content: center;
+}
+
+.divMainEntrar {
+  width: 100%;
+  height: 25%;
+  margin-top: 10%;
+}
+
+.divErroEntrar {
+  display: flex;
+
+  width: 100%;
+  margin-top: -1%;
+  margin-bottom: 2%;
+
+  color: var(--light-red);
+
+  justify-content: center;
+}
+
+.btnMainBig {
+  display: flex;
+
+  width: 17.1875rem;
+  height: 3.6875rem;
+
+  cursor: pointer;
+
+  border: 0.0625rem solid var(--light-green);
+  background: var(--green);
+  -webkit-box-shadow: 0 0.25rem 0.25rem -0.125rem var(--shadow-grey);
+  -moz-box-shadow: 0 0.25rem 0.25rem -0.125rem var(--shadow-grey);
+  box-shadow: 0 0.25rem 0.25rem -0.125rem var(--shadow-grey);
+
+  justify-content: center;
+  align-items: center;
+}
+
+.popup {
+  font-size: 2.25rem;
+
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  color: var(--light-red);
+  background: rgba(0, 0, 0, 0.75);
+
+  justify-content: center;
+  align-items: center;
+}
+
+.popupHidden {
+  display: none;
+}
+
+.popupBg {
+  display: flex;
+  flex-direction: column;
+
+  width: 49.0625rem;
+  height: 19.5rem;
+
+  background-color: var(--white);
+
+  justify-content: center;
+  align-items: center;
+}
+
+.popupBtn {
+  display: flex;
+  flex-direction: row;
+
+  align-items: center;
+}
+
+.btnRemoverSim {
+  display: flex;
+
+  width: 13.5rem;
+  height: 4.4375rem;
+  margin: 1.25rem;
+  margin-top: 3.75rem;
+
+  cursor: pointer;
+
+  background: #ff8383;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.btnRemoverCancelar {
+  display: flex;
+
+  width: 13.5rem;
+  height: 4.4375rem;
+  margin: 1.25rem;
+  margin-top: 3.75rem;
+
+  cursor: pointer;
+
+  background: var(--light-blue);
+
+  justify-content: center;
+  align-items: center;
+}
+
+.txtBtnPopup {
+  font-size: 2.25rem;
+
+  color: var(--white);
+}
+
+.mainRecuperarSenha {
+  display: flex;
+
+  margin-top: 6.5625rem;
+
+  justify-content: center;
+}
+
+.aRecuperarSenha:link {
+  color: var(--blue);
+  background-color: transparent;
+}
+
+.aRecuperarSenha:visited {
+  text-decoration: underline;
+
+  color: var(--blue);
+  background-color: transparent;
+}
+
+.aRecuperarSenha:hover {
+  text-decoration: none;
+
+  color: var(--blue);
+  background-color: transparent;
+}
+
+.aRecuperarSenha:active {
+  text-decoration: none;
+
+  color: var(--blue);
+  background-color: transparent;
+}
+
+::selection {
+  background: #adc6d5;
+}

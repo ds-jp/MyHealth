@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Averia+Libre&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles/style.css" />
+    <meta charset="UTF-8" />
+    <link rel="icon" href="../images/logo-myhealth.png" />
+    <title>MyHealth - Nova Vacina</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+
+    <script src="../scripts/script.js"></script>
+    <script type="module">
+      import { auth, db, storage } from "../scripts/firebase.js";
+      import { signOut } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-auth.js";
+      import {
+        addDoc,
+        collection,
+        getDoc,
+        doc,
+        updateDoc,
+        deleteDoc,
+      } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-firestore.js";
+      import {
+        uploadBytes,
+        ref,
+        getDownloadURL,
+        deleteObject,
+      } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-storage.js";
+
+      auth.onAuthStateChanged(function (user) {
+        if (!auth.currentUser) window.location.href = "./index.html";
+        console.log(auth.currentUser.uid);
+      });
+
+      const deslogar = () => {
+        signOut(auth);
+        getDoseVac();
+        pageIndex();
+      };
+
+      const getNomeVac = () => {
+        console.log("Nome vac: " + document.getElementById("txtVacina").value);
+        return document.getElementById("txtVacina").value;
+      };
+
+      function inputDateToString(data) {
+        let split = data.split("-");
+        return split[2] + "/" + split[1] + "/" + split[0];
+      }
+
+      const getDataVac = () => {
+        return document.getElementById("inputData").value;
+      };
+
+      const getDoseVac = () => {
+        if (document.getElementById("dose1").checked == true) {
+          return "1a. dose";
+        } else if (document.getElementById("dose2").checked == true) {
+          return "2a. dose";
+        } else if (document.getElementById("dose3").checked == true) {
+          return "3a. dose";
+        } else if (document.getElementById("doseRef").checked == true) {
+          return "Reforço";
+        } else if (document.getElementById("doseUni").checked == true) {
+          return "Dose única";
+        }
+      };
+
+      const getProxDoseVac = () => {
+        return document.getElementById("inputProxVac").value;
+      };
+
+      const getPathFoto = () => {
+        return pathFoto;
+      };
+
+      const getUrlFoto = () => {
+        return document.getElementById("imagem").value;
+      };
+
+      const setUrlFoto = (url) => {
+        console.log("Imagem url: " + document.getElementById("imagem").value);
+        document.getElementById("imagem").value = url;
+      };
+
+      const setPathFoto = (caminho) => {
+        pathFoto = caminho;
+      };
+
+      const uid = () => {
+        const id = Date.now().toString(16) + Math.random().toString(16);
+        console.log("ID: " + id.replace(/\./g, ""));
+        return id.replace(/\./g, "");
+      };
+
+      const cadastrar = () => {
+        const fileRef = "vacinas/" + uid();
+
+        uploadBytes(ref(storage, fileRef), file)
+          .then((result) => {
+            console.log("Arquivo enviado com sucesso: " + result);
+            getDownloadURL(ref(storage, fileRef))
+              .then((url) => {
+                console.log("URL: " + url);
+                addDoc(collection(db, "vacinas"), {
+                  nomeVac: getNomeVac(),
+                  doseVac: getDoseVac(),
+                  dataVac: inputDateToString(getDataVac()),
+                  proxDoseVac: inputDateToString(getProxDoseVac()),
+                  imgVac: url,
+                  pathFoto: fileRef,
+                  uid: auth.currentUser.uid,
+                })
+                  .then((result) => {
+                    console.log(JSON.stringify(result));
+                    alert("Cadastrado com sucesso!");
+                    pageHome();
+                  })
+                  .catch((error) => {
+                    console.log("Erro ao persistir dados: " + error);
+                  });
+              })
+              .catch((error) => {
+                console.log("Erro ao recuperar URL de download: " + error);
+              });
+          })
+          .catch((error) => {
+            console.log("Erro ao enviar arquivo: " + error);
+          });
+      };
+
+      var file = null;
+
+      window.onload = () => {
+        dynamicHeader();
+
+        document
+          .getElementById("btnLogout")
+          .addEventListener("click", deslogar);
+
+        document
+          .getElementById("upload-photo")
+          .addEventListener("change", function (event) {
+            file = event.target.files[0];
+            document.getElementById("imagem").src = URL.createObjectURL(file);
+          });
+        document
+          .getElementById("btnCadastrar")
+          .addEventListener("click", cadastrar);
+      };
+    </script>
+  </head>
+  <body>
+    <!--05-->
+    <header class="subheader" id="headerLoggedOn"></header>
+
+    <main class="mainBgColor">
+      <table class="divMainEditar">
+        <tr>
+          <td align="right" class="txtCampos">Data de vacinação</td>
+          <td align="left">
+            <input class="inputDate" id="inputData" type="date" />
+          </td>
+        </tr>
+        <tr>
+          <td align="right" class="txtCampos">Vacina</td>
+          <td align="left">
+            <input class="inputTextEditar" id="txtVacina" type="text" />
+          </td>
+        </tr>
+        <tr>
+          <td align="right" class="txtCampos">Dose</td>
+          <td align="left">
+            <input
+              class="inputRadio"
+              type="radio"
+              name="dose"
+              id="dose1"
+              checked="checked"
+            />
+            <span class="txtCampos">1a. dose</span>
+            <input class="inputRadio" type="radio" id="dose2" name="dose" />
+            <span class="txtCampos">2a. dose</span>
+            <input class="inputRadio" type="radio" id="dose3" name="dose" />
+            <span class="txtCampos">3a. dose</span>
+            <input class="inputRadio" type="radio" id="doseRef" name="dose" />
+            <span class="txtCampos">Reforço</span>
+            <input class="inputRadio" type="radio" id="doseUni" name="dose" />
+            <span class="txtCampos">Dose única</span>
+          </td>
+        </tr>
+        <tr>
+          <td align="right" class="divComprovantePreview">
+            <div class="divComprovante">
+              <span class="txtCampos">Comprovante de vacina</span>
+            </div>
+          </td>
+          <td align="left">
+            <label class="labelUpload" for="upload-photo"
+              ><div class="inputUploadFile">
+                <span>Selecionar imagem...</span>
+              </div></label
+            >
+            <input
+              type="file"
+              name="photo"
+              class="upload-photo"
+              id="upload-photo"
+            />
+            <img
+              class="imgComprovanteUpload"
+              id="imagem"
+              src="../images/image-comprovante.png"
+              alt="Imagem do comprovante de vacina"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td align="right" class="txtCampos">Próxima vacinação</td>
+          <td align="left">
+            <input class="inputDate" id="inputProxVac" type="date" />
+          </td>
+        </tr>
+      </table>
+      <div class="divBtnMain">
+        <div class="btnMainSmall" id="btnCadastrar">
+          <span class="txtBtnMainSmall">Cadastrar</span>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

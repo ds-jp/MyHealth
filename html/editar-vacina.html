@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Averia+Libre&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles/style.css" />
+    <meta charset="UTF-8" />
+    <link rel="icon" href="../images/logo-myhealth.png" />
+    <title>MyHealth - Editar Vacina</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+
+    <script src="../scripts/script.js"></script>
+    <script src="../scripts/editar-vacina.js"></script>
+
+    <script type="module">
+      import { app, auth, db, storage } from "../scripts/firebase.js";
+      import { signOut } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-auth.js";
+      import {
+        addDoc,
+        getDoc,
+        doc,
+        updateDoc,
+        deleteDoc,
+      } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-firestore.js";
+      import {
+        uploadBytes,
+        ref,
+        getDownloadURL,
+        deleteObject,
+      } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-storage.js";
+      import {
+        query,
+        collection,
+        onSnapshot,
+        where,
+      } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-firestore.js";
+
+      auth.onAuthStateChanged(function (user) {
+        if (!auth.currentUser) window.location.href = "./index.html";
+      });
+
+      const vacinas = [];
+
+      const carregaVacina = () => {
+        const url = window.location.search;
+        const urlParams = new URLSearchParams(url);
+        const id = urlParams.get("id");
+
+        if (id) {
+          getDoc(doc(db, "vacinas", id)).then((documento) => {
+            if (auth.currentUser.uid == documento.data().uid) {
+              let data = stringToInputDate(documento.data().dataVac);
+              let nome = documento.data().nomeVac;
+              let dose = documento.data().doseVac;
+              let img = documento.data().imgVac;
+              setPathFoto(documento.data().pathFoto);
+              let proxDose = stringToInputDate(documento.data().proxDoseVac);
+              document.getElementById("inputDataVac").value = data;
+              document.getElementById("inputNomeVac").value = nome;
+              switch (dose) {
+                case "1a. dose":
+                  document.getElementById("1a.Dose").checked = "checked";
+                  break;
+                case "2a. dose":
+                  document.getElementById("2a.Dose").checked = "checked";
+                  break;
+                case "3a. dose":
+                  document.getElementById("3a.Dose").checked = "checked";
+                  break;
+                case "Reforço":
+                  document.getElementById("reforço").checked = "checked";
+                  break;
+                case "Dose única":
+                  document.getElementById("doseÚnica").checked = "checked";
+                  break;
+                default:
+                  break;
+              }
+              document.getElementById("imgComprovante").src = img;
+              if (dose === "Dose única") {
+                // Não altera o valor do input date "inputProxDoseVac"
+              } else {
+                document.getElementById("inputProxDoseVac").value = proxDose;
+              }
+            } else {
+              pageHome();
+            }
+          });
+        }
+      };
+
+      var file = null;
+      var pathFoto = null;
+
+      function stringToInputDate(data) {
+        let split = data.split("/");
+        return split[2] + "-" + split[1] + "-" + split[0];
+      }
+
+      const getNomeVac = () => {
+        return document.getElementById("inputNomeVac").value;
+      };
+
+      function inputDateToString(data) {
+        let split = data.split("-");
+        return split[2] + "/" + split[1] + "/" + split[0];
+      }
+
+      const getDataVac = () => {
+        return document.getElementById("inputDataVac").value;
+      };
+
+      const getDoseVac = () => {
+        if (document.getElementById("1a.Dose").checked == true) {
+          return "1a. dose";
+        } else if (document.getElementById("2a.Dose").checked == true) {
+          return "2a. dose";
+        } else if (document.getElementById("3a.Dose").checked == true) {
+          return "3a. dose";
+        } else if (document.getElementById("reforço").checked == true) {
+          return "Reforço";
+        } else if (document.getElementById("doseÚnica").checked == true) {
+          return "Dose única";
+        }
+      };
+
+      const getProxDoseVac = () => {
+        return document.getElementById("inputProxDoseVac").value;
+      };
+
+      const getPathFoto = () => {
+        return pathFoto;
+      };
+
+      const getUrlFoto = () => {
+        return document.getElementById("imgComprovante").value;
+      };
+
+      const setUrlFoto = (url) => {
+        console.log(
+          "Imagem url: " + document.getElementById("imgComprovante").value
+        );
+        document.getElementById("imgComprovante").value = url;
+      };
+
+      const setPathFoto = (caminho) => {
+        pathFoto = caminho;
+      };
+
+      const uid = () => {
+        const id = Date.now().toString(16) + Math.random().toString(16);
+        console.log("ID: " + id.replace(/\./g, ""));
+        return id.replace(/\./g, "");
+      };
+
+      const editar = () => {
+        const url = window.location.search;
+        const urlParams = new URLSearchParams(url);
+        const id = urlParams.get("id");
+
+        if (file) {
+          uploadBytes(ref(storage, getPathFoto()), file)
+            .then((result) => {
+              getDownloadURL(ref(storage, getPathFoto()))
+                .then((url) => {
+                  updateDoc(doc(db, "vacinas", id), {
+                    nomeVac: getNomeVac(),
+                    doseVac: getDoseVac(),
+                    dataVac: inputDateToString(getDataVac()),
+                    proxDoseVac: inputDateToString(getProxDoseVac()),
+                    imgVac: url,
+                    pathFoto: getPathFoto(),
+                  })
+                    .then((result) => {
+                      alert("Alterado com sucesso!");
+                      pageHome();
+                    })
+                    .catch((error) => {
+                      console.log("Erro ao atualizar dados: " + error);
+                    });
+                })
+                .catch((error) => {
+                  console.log("Erro ao recuperar URL de download: " + error);
+                });
+            })
+            .catch((error) => {
+              console.log("Erro ao enviar arquivo: " + error);
+            });
+        } else {
+          getDownloadURL(ref(storage, getPathFoto())).then((url) => {
+            updateDoc(doc(db, "vacinas", id), {
+              nomeVac: getNomeVac(),
+              doseVac: getDoseVac(),
+              dataVac: inputDateToString(getDataVac()),
+              proxDoseVac: inputDateToString(getProxDoseVac()),
+              imgVac: url,
+              pathFoto: getPathFoto(),
+            })
+              .then(() => {
+                alert("Alterado com sucesso!");
+                pageHome();
+              })
+              .catch((error) => {
+                console.log("Erro ao atualizar o documento: " + error);
+              });
+          });
+        }
+      };
+
+      const deletar = () => {
+        const url = window.location.search;
+        const urlParams = new URLSearchParams(url);
+        const id = urlParams.get("id");
+        deleteObject(ref(storage, getPathFoto()))
+          .then(() => {
+            console.log("Exclusão.");
+            deleteDoc(doc(db, "vacinas", id))
+              .then(() => {
+                alert("Excluído com sucesso!");
+                pageHome();
+              })
+              .catch((error) => {
+                console.log("Erro ao excluir documento: " + error);
+              });
+          })
+          .catch((error) => {
+            console.log("Erro ao excluir o arquivo.");
+          });
+      };
+
+      const deslogar = () => {
+        signOut(auth);
+        pageIndex();
+      };
+
+      window.onload = () => {
+        dynamicHeader();
+        carregaVacina();
+        document
+          .getElementById("btnLogout")
+          .addEventListener("click", deslogar);
+        document.getElementById("btnSalvar").addEventListener("click", editar);
+        document
+          .getElementById("btnExcluir")
+          .addEventListener("click", deletar);
+        document
+          .getElementById("upload-photo")
+          .addEventListener("change", function (event) {
+            file = event.target.files[0];
+            document.getElementById("imgComprovante").src =
+              URL.createObjectURL(file);
+          });
+      };
+    </script>
+  </head>
+  <body>
+    <!--03-->
+    <header class="subheader" id="headerLoggedOn"></header>
+
+    <main class="mainBgColor">
+      <div class="divBtnExcluir">
+        <div class="btnMainExcluir" onclick="showPopup()">
+          <div class="iconBtnExcluir">
+            <em class="fa fa-trash fa-2x"></em>
+          </div>
+          <span class="txtBtnExcluir">Excluir</span>
+        </div>
+      </div>
+      <div class="popup popupHidden">
+        <div class="popupBg">
+          <div>
+            <span>Tem certeza que deseja remover essa vacina?</span>
+          </div>
+          <div class="popupBtn">
+            <div class="btnRemoverSim" id="btnExcluir">
+              <span class="txtBtnPopup">SIM</span>
+            </div>
+            <div class="btnRemoverCancelar" onclick="hidePopup()">
+              <span class="txtBtnPopup">CANCELAR</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <table class="divMainEditar">
+        <tr>
+          <td align="right" class="txtCampos">Data de vacinação</td>
+          <td align="left">
+            <input class="inputDate" id="inputDataVac" type="date" />
+          </td>
+        </tr>
+        <tr>
+          <td align="right" class="txtCampos">Vacina</td>
+          <td align="left">
+            <input class="inputTextEditar" id="inputNomeVac" type="text" />
+          </td>
+        </tr>
+        <tr>
+          <td align="right" class="txtCampos">Dose</td>
+          <td align="left">
+            <input class="inputRadio" id="1a.Dose" type="radio" name="dose" />
+            <span class="txtCampos">1a. dose</span>
+            <input class="inputRadio" id="2a.Dose" type="radio" name="dose" />
+            <span class="txtCampos">2a. dose</span>
+            <input class="inputRadio" id="3a.Dose" type="radio" name="dose" />
+            <span class="txtCampos">3a. dose</span>
+            <input class="inputRadio" id="reforço" type="radio" name="dose" />
+            <span class="txtCampos">Reforço</span>
+            <input class="inputRadio" id="doseÚnica" type="radio" name="dose" />
+            <span class="txtCampos">Dose única</span>
+          </td>
+        </tr>
+        <tr>
+          <td align="right" class="divComprovantePreview">
+            <div class="divComprovante">
+              <span class="txtCampos">Comprovante de vacina</span>
+            </div>
+          </td>
+          <td align="left">
+            <label class="labelUpload" for="upload-photo"
+              ><div class="inputUploadFile">
+                <span>Selecionar imagem...</span>
+              </div></label
+            >
+            <input
+              type="file"
+              name="photo"
+              class="upload-photo"
+              id="upload-photo"
+            />
+            <img
+              class="imgComprovanteUpload"
+              id="imgComprovante"
+              alt="Imagem do comprovante de vacina"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td align="right" class="txtCampos">Próxima vacinação</td>
+          <td align="left">
+            <input class="inputDate" id="inputProxDoseVac" type="date" />
+          </td>
+        </tr>
+      </table>
+      <div class="divBtnMain">
+        <div class="btnMainSmall" id="btnSalvar">
+          <span class="txtBtnMainSmall">Salvar alterações</span>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

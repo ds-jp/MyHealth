@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Averia+Libre&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles/style.css" />
+    <meta charset="UTF-8" />
+    <link rel="icon" href="../images/logo-myhealth.png" />
+    <title>MyHealth - Recuperar a Senha</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+
+    <script src="../scripts/script.js"></script>
+
+    <script type="module">
+      import { app, auth } from "../scripts/firebase.js";
+      import { sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-auth.js";
+
+      const getEmail = () => {
+        return document.getElementById("emailrec").value;
+      };
+
+      const recuperarSenha = () => {
+        const email = getEmail();
+
+        sendPasswordResetEmail(auth, email)
+          .then(() => {
+            alert("Solicitação realizada com sucesso!");
+            pageEntrar();
+          })
+          .catch(() => {
+            alert("Erro ao solicitar recuperação de senha.");
+          });
+      };
+
+      window.onload = () => {
+        dynamicHeader();
+        document
+          .getElementById("btnRecuperarSenha")
+          .addEventListener("click", recuperarSenha);
+      };
+    </script>
+  </head>
+  <body>
+    <!--07-->
+    <header class="subheader" id="header"></header>
+
+    <main class="mainBgColor">
+      <table class="divMainEntrar">
+        <tr>
+          <td align="right" class="txtCampos">E-mail</td>
+          <td align="left">
+            <input
+              class="inputTextCriarConta"
+              type="text"
+              id="emailrec"
+              value="jurandir.pereira@hotmail.com"
+            />
+          </td>
+        </tr>
+      </table>
+      <div class="divBtnMain">
+        <div class="btnMainBig" id="btnRecuperarSenha">
+          <span class="txtBtnMainSmall">Redefinir senha</span>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

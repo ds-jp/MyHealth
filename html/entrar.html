@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Averia+Libre&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles/style.css" />
+    <meta charset="UTF-8" />
+    <link rel="icon" href="../images/logo-myhealth.png" />
+    <title>MyHealth - Entrar</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+
+    <script src="../scripts/script.js"></script>
+
+    <script type="module">
+      import { app, auth } from "../scripts/firebase.js";
+      import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-auth.js";
+
+      const getEmail = () => {
+        return document.getElementById("emaillog").value;
+      };
+
+      const getSenha = () => {
+        return document.getElementById("passwordlog").value;
+      };
+
+      const autenticarUsuario = () => {
+        const email = getEmail();
+        const senha = getSenha();
+
+        signInWithEmailAndPassword(auth, email, senha)
+          .then((user) => {
+            pageHome();
+          })
+          .catch((error) => {
+            if (error.code === "auth/network-request-failed")
+              document.getElementById("erroEntrar").innerHTML =
+                "E-mail e/ou senha inválidos.";
+            else if (error.code === "auth/user-not-found")
+              document.getElementById("erroEntrar").innerHTML =
+                "E-mail e/ou senha inválidos.";
+            else if (error.code === "auth/too-many-requests")
+              document.getElementById("erroEntrar").innerHTML =
+                "Muitas requisições foram feitas. Aguarde um momento.";
+          });
+      };
+
+      window.onload = () => {
+        dynamicHeader();
+        document
+          .getElementById("btnAutenticar")
+          .addEventListener("click", autenticarUsuario);
+      };
+    </script>
+  </head>
+  <body>
+    <!--06-->
+    <header class="subheader" id="header"></header>
+
+    <main class="mainBgColor">
+      <table class="divMainEntrar">
+        <tr>
+          <td align="right" class="txtCampos">E-mail</td>
+          <td align="left">
+            <input
+              class="inputTextCriarConta"
+              type="text"
+              id="emaillog"
+              value="jurandir.pereira@hotmail.com"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td align="right" class="txtCampos">Senha</td>
+          <td align="left">
+            <input
+              class="inputTextCriarConta"
+              type="password"
+              id="passwordlog"
+              value="123456789"
+            />
+          </td>
+        </tr>
+      </table>
+      <div class="divErroEntrar">
+        <span id="erroEntrar"></span>
+      </div>
+      <div class="divBtnMain">
+        <div class="btnMainSmall" id="btnAutenticar">
+          <span class="txtBtnMainSmall">Entrar</span>
+        </div>
+      </div>
+      <div class="mainRecuperarSenha">
+        <a href="/html/recuperar-senha.html" class="aRecuperarSenha"
+          >Esqueci minha senha</a
+        >
+      </div>
+    </main>
+  </body>
+</html>
