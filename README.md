@@ -10,3 +10,6 @@ Recuperação de senha de um usuário cadastrado: possibilitar a redefinição d
 Autenticação de usuário: validar as credenciais (email/senha) informadas pelo usuário;
 Controle de vacinas aplicadas: possibilitar o cadastro, edição, exclusão e visualização de vacinas aplicadas;
 Pesquisa de vacinas: buscar e exibir vacinas informadas pelo usuário.
+
+Nota geral da disciplina 10/10.
+Professor: Henrique Yoshikazu Shishido - Doutorado.
